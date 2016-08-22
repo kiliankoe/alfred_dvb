@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/kiliankoe/alfred_dvb/issues"
   },
-  "homepage": "https://github.com/kiliankoe/alfred_dvb#readme"
+  "homepage": "https://github.com/kiliankoe/alfred_dvb#readme",
+  "dependencies": {
+    "dvbjs": "^4.0.3"
+  }
 }
