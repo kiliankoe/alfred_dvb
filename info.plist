@@ -9,7 +9,7 @@
 	<key>createdby</key>
 	<string>Kilian Koeltzsch</string>
 	<key>description</key>
-	<string>Monitor stops in the VVO network
+	<string>Monitor public transport in the VVO/DVB network from Alfred
 Icon by https://icons8.com</string>
 	<key>disabled</key>
 	<false/>

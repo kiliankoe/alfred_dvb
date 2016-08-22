@@ -1,0 +1,26 @@
+{
+  "name": "alfred_dvb",
+  "version": "0.1.0",
+  "description": "Monitor public transport in the VVO/DVB network from Alfred",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kiliankoe/alfred_dvb.git"
+  },
+  "keywords": [
+    "alfred",
+    "dvb",
+    "vvo",
+    "bus",
+    "tram"
+  ],
+  "author": "Kilian Koeltzsch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kiliankoe/alfred_dvb/issues"
+  },
+  "homepage": "https://github.com/kiliankoe/alfred_dvb#readme"
+}
