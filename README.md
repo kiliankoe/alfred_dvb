@@ -12,3 +12,5 @@ ToDo:
 - [ ] Action items should schedule notifications
 - [ ] Support routing or other stuff?
 
+
+Bus icon by [icons8.com](https://icons8.com).
