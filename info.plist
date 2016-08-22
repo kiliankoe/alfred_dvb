@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>io.kilian.alfred_dvb</string>
+	<key>connections</key>
+	<dict/>
+	<key>createdby</key>
+	<string>Kilian Koeltzsch</string>
+	<key>description</key>
+	<string>Monitor stops in the VVO network
+Icon by https://icons8.com</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>dvb</string>
+	<key>objects</key>
+	<array/>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict/>
+	<key>webaddress</key>
+	<string>https://github.com/kiliankoe/alfred_dvb</string>
+</dict>
+</plist>
