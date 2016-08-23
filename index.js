@@ -25,7 +25,7 @@ dvb.monitor(args[0], timeOffset, numResults)
         data.forEach(function(con) {
             items.items.push({
                 'title': con.line + ' ' + con.direction + ' in ' + con.arrivalTimeRelative + ' minutes',
-                'subtitle': moment(con.arrivalTime).format('dddd, HH:mm [Uhr]'),
+                'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
                 'icon': {
                     'path': 'transport_icons/' + con.mode.name + '.png'
                 }
