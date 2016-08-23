@@ -16,7 +16,7 @@ dvb.monitor(args[0], timeOffset, numResults)
 
         if (data.length === 0) {
             items.items.push({
-                'title': 'No such stop found 🤔'
+                'title': 'Haltestelle nicht gefunden 🤔'
             })
             console.log(JSON.stringify(items))
             return
@@ -44,9 +44,9 @@ dvb.monitor(args[0], timeOffset, numResults)
     })
     .catch(function (err) {
         var items = {'items': [{
-            'title': 'Ran into an error 😭',
-            'subtitle': err,
+            'title': 'Unerwarteter Fehler 😲',
+            'subtitle': err.message,
         }]}
-        console.log(items)
+        console.log(JSON.stringify(items))
         throw err
     })
