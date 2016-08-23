@@ -23,8 +23,16 @@ dvb.monitor(args[0], timeOffset, numResults)
         }
 
         data.forEach(function(con) {
+            var timeText
+            if (con.arrivalTimeRelative === 0) {
+                timeText = ' jetzt'
+            } else if (con.arrivalTimeRelative === 1) {
+                timeText = ' in 1 Minute'
+            } else {
+                timeText = ' in ' + con.arrivalTimeRelative + ' Minuten'
+            }
             items.items.push({
-                'title': con.line + ' ' + con.direction + ' in ' + con.arrivalTimeRelative + ' minutes',
+                'title': con.line + ' ' + con.direction + timeText,
                 'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
                 'icon': {
                     'path': 'transport_icons/' + con.mode.name + '.png'
