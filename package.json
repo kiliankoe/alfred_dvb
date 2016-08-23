@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/kiliankoe/alfred_dvb#readme",
   "dependencies": {
-    "dvbjs": "^4.0.3"
+    "dvbjs": "^4.2.0",
+    "moment": "^2.14.1"
   }
 }
