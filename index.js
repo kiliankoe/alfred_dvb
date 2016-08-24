@@ -6,23 +6,24 @@ moment.locale('de')
 
 var args = process.argv.slice(2)
 
-var timeOffset
-args[1] ? timeOffset = args[1] : timeOffset = 0
+// TODO: Decide on if this is a monitor request somehow
+displayMonitor(args)
 
-var numResults = 6
-dvb.monitor(args[0], timeOffset, numResults)
-    .then(function(data) {
+function displayMonitor (stop, timeOffset = 0, numResults = 6) {
+    dvb.monitor(args[0], timeOffset, numResults)
+    .then(function (data) {
         var items = {'items': []}
 
         if (data.length === 0) {
             items.items.push({
-                'title': 'Haltestelle nicht gefunden 🤔'
+                'title': 'Haltestelle nicht gefunden 🤔',
+                'subtitle': 'Vielleicht ein Tippfehler?'
             })
             console.log(JSON.stringify(items))
             return
         }
 
-        data.forEach(function(con) {
+        data.forEach(function (con) {
             var timeText
             if (con.arrivalTimeRelative === 0) {
                 timeText = ' jetzt'
@@ -50,3 +51,4 @@ dvb.monitor(args[0], timeOffset, numResults)
         console.log(JSON.stringify(items))
         throw err
     })
+}
