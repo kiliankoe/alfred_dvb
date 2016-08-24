@@ -18,9 +18,10 @@ if (offsetMatch !== null && offsetMatch.length > 0) {
     stop = args[0].split('in')[0]
 }
 
-monitor(stop, offset).then(output => {
-    console.log(JSON.stringify(createAlfredJSON(output)))
-})
+monitor(stop, offset)
+  .then(createAlfredJSON)
+  .then(JSON.stringify)
+  .then(console.log);
 
 function parseConnection(con) {
 
