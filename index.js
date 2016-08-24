@@ -21,7 +21,7 @@ if (offsetMatch !== null && offsetMatch.length > 0) {
 monitor(stop, offset)
   .then(createAlfredJSON)
   .then(JSON.stringify)
-  .then(console.log);
+  .then(console.log)
 
 function parseConnection(con) {
 
