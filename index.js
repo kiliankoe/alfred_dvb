@@ -21,9 +21,28 @@ monitor(stop, offset).then(output => {
     console.log(JSON.stringify(createAlfredJSON(output)))
 })
 
+function parseConnection(con) {
+
+    var arg = '0 "Zu bald" "Verbindung muss mehr als 10 Minuten in der Zukunft liegen."'
+    if (con.arrivalTimeRelative > notificationOffset) {
+        var lineDescription = `${con.line} ${con.direction}`
+        arg = `${con.arrivalTimeRelative - notificationOffset} "Zeit Zu Gehen" "Die ${lineDescription} fährt in ${notificationOffset} Minuten."`
+    }
+
+    return {
+        'title': con.line + ' ' + con.direction + createArrivalTimeString(con.arrivalTimeRelative),
+        'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
+        'arg': arg,
+        'icon': {
+            'path': `transport_icons/${con.mode.name}.png`
+        }
+    }
+}
+
 function monitor(stop, timeOffset = 0, numResults = 6) {
     return dvb.monitor(stop, timeOffset, numResults)
     .then((data) => {
+
         if (data.length === 0) {
             return [{
                 'title': 'Haltestelle nicht gefunden 🤔',
@@ -31,22 +50,7 @@ function monitor(stop, timeOffset = 0, numResults = 6) {
             }]
         }
 
-        return data.map(con => {
-            var arg = '0 "Zu bald" "Verbindung muss mehr als 10 Minuten in der Zukunft liegen."'
-            if (con.arrivalTimeRelative > notificationOffset) {
-                var lineDescription = `${con.line} ${con.direction}`
-                arg = `${con.arrivalTimeRelative - notificationOffset} "Zeit Zu Gehen" "Die ${lineDescription} fährt in ${notificationOffset} Minuten."`
-            }
-
-            return {
-                'title': con.line + ' ' + con.direction + createArrivalTimeString(con.arrivalTimeRelative),
-                'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
-                'arg': arg,
-                'icon': {
-                    'path': `transport_icons/${con.mode.name}.png`
-                }
-            }
-        })
+        return data.map(parseConnection)
     })
     .catch(err => {
         return [{
