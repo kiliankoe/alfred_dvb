@@ -1,15 +1,16 @@
 #! /usr/local/bin/node
 
-var dvb = require('dvbjs')
-var moment = require('moment')
+const dvb = require('dvbjs')
+const moment = require('moment')
+
 moment.locale('de')
 
-var args = process.argv.slice(2)
+const args = process.argv.slice(2)
+const notificationOffset = 10
 
-var notificationOffset = 10
-
-var offset = 0
 var stop = args[0]
+var offset = 0
+
 
 var offsetMatch = args[0].match(/in (\d+)/)
 if (offsetMatch !== null && offsetMatch.length > 0) {
