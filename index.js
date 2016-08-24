@@ -1,15 +1,16 @@
 #! /usr/local/bin/node
 
-var dvb = require('dvbjs')
-var moment = require('moment')
+const dvb = require('dvbjs')
+const moment = require('moment')
+
 moment.locale('de')
 
-var args = process.argv.slice(2)
+const args = process.argv.slice(2)
+const notificationOffset = 10
 
-var notificationOffset = 10
-
-var offset = 0
 var stop = args[0]
+var offset = 0
+
 
 var offsetMatch = args[0].match(/in (\d+)/)
 if (offsetMatch !== null && offsetMatch.length > 0) {
@@ -17,13 +18,33 @@ if (offsetMatch !== null && offsetMatch.length > 0) {
     stop = args[0].split('in')[0]
 }
 
-monitor(stop, offset).then(output => {
-    console.log(JSON.stringify(createAlfredJSON(output)))
-})
+monitor(stop, offset)
+  .then(createAlfredJSON)
+  .then(JSON.stringify)
+  .then(console.log);
+
+function parseConnection(con) {
+
+    var arg = '0 "Zu bald" "Verbindung muss mehr als 10 Minuten in der Zukunft liegen."'
+    if (con.arrivalTimeRelative > notificationOffset) {
+        var lineDescription = `${con.line} ${con.direction}`
+        arg = `${con.arrivalTimeRelative - notificationOffset} "Zeit Zu Gehen" "Die ${lineDescription} fährt in ${notificationOffset} Minuten."`
+    }
+
+    return {
+        'title': con.line + ' ' + con.direction + createArrivalTimeString(con.arrivalTimeRelative),
+        'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
+        'arg': arg,
+        'icon': {
+            'path': `transport_icons/${con.mode.name}.png`
+        }
+    }
+}
 
 function monitor(stop, timeOffset = 0, numResults = 6) {
     return dvb.monitor(stop, timeOffset, numResults)
     .then((data) => {
+
         if (data.length === 0) {
             return [{
                 'title': 'Haltestelle nicht gefunden 🤔',
@@ -31,22 +52,7 @@ function monitor(stop, timeOffset = 0, numResults = 6) {
             }]
         }
 
-        return data.map(con => {
-            var arg = '0 "Zu bald" "Verbindung muss mehr als 10 Minuten in der Zukunft liegen."'
-            if (con.arrivalTimeRelative > notificationOffset) {
-                var lineDescription = `${con.line} ${con.direction}`
-                arg = `${con.arrivalTimeRelative - notificationOffset} "Zeit Zu Gehen" "Die ${lineDescription} fährt in ${notificationOffset} Minuten."`
-            }
-
-            return {
-                'title': con.line + ' ' + con.direction + createArrivalTimeString(con.arrivalTimeRelative),
-                'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
-                'arg': arg,
-                'icon': {
-                    'path': `transport_icons/${con.mode.name}.png`
-                }
-            }
-        })
+        return data.map(parseConnection)
     })
     .catch(err => {
         return [{
