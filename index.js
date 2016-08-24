@@ -25,10 +25,9 @@ monitor(stop, offset)
 
 function parseConnection(con) {
 
-    var arg = '0 "Zu bald" "Verbindung muss mehr als 10 Minuten in der Zukunft liegen."'
+    var arg = '0 "Zu bald" "Verbindung muss für eine Benachrichtigung mehr als 10 Minuten in der Zukunft liegen."'
     if (con.arrivalTimeRelative > notificationOffset) {
-        var lineDescription = `${con.line} ${con.direction}`
-        arg = `${con.arrivalTimeRelative - notificationOffset} "Zeit Zu Gehen" "Die ${lineDescription} fährt in ${notificationOffset} Minuten."`
+        arg = `${con.arrivalTimeRelative - notificationOffset} "Auf geht's" "Die ${con.line} Richtung ${con.direction} fährt in ${notificationOffset} Minuten."`
     }
 
     return {
