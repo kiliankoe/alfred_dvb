@@ -16,6 +16,8 @@ Download [here](https://github.com/kiliankoe/alfred_dvb/releases/latest).
 
   Gives you all connections from Prager Straße in 10 minutes. Optional text after the amount of minutes is ignored, so you could also enter `dvb prager in 10 minutes` if you prefer.
 
+Hitting ⏎ on a connection will schedule a notification to be sent 10 minutes prior to departure.
+
 ### Problems?
 
 Please [report an issue](https://github.com/kiliankoe/alfred_dvb/issues/new) if something isn't working as expected or you have a question/feature request.
