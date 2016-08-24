@@ -6,11 +6,21 @@ moment.locale('de')
 
 var args = process.argv.slice(2)
 
-// TODO: Decide on if this is a monitor request somehow
-displayMonitor(args)
+var offset = 0
+var stop = args[0]
 
-function displayMonitor (stop, timeOffset = 0, numResults = 6) {
-    dvb.monitor(args[0], timeOffset, numResults)
+var offsetMatch = args[0].match(/in (\d+)/)
+if (offsetMatch !== null && offsetMatch.length > 0) {
+    offset = offsetMatch[1]
+    stop = args[0].split('in')[0]
+}
+
+monitor(stop, offset).then(function (output) {
+    console.log(JSON.stringify(output))
+})
+
+function monitor (stop, timeOffset = 0, numResults = 6) {
+    return dvb.monitor(stop, timeOffset, numResults)
     .then(function (data) {
         var items = {'items': []}
 
@@ -19,11 +29,10 @@ function displayMonitor (stop, timeOffset = 0, numResults = 6) {
                 'title': 'Haltestelle nicht gefunden 🤔',
                 'subtitle': 'Vielleicht ein Tippfehler?'
             })
-            console.log(JSON.stringify(items))
-            return
+            return items
         }
 
-        data.forEach(function (con) {
+        items.items = data.map(function (con) {
             var timeText
             if (con.arrivalTimeRelative === 0) {
                 timeText = ' jetzt'
@@ -32,23 +41,21 @@ function displayMonitor (stop, timeOffset = 0, numResults = 6) {
             } else {
                 timeText = ' in ' + con.arrivalTimeRelative + ' Minuten'
             }
-            items.items.push({
+            return {
                 'title': con.line + ' ' + con.direction + timeText,
                 'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
                 'icon': {
                     'path': 'transport_icons/' + con.mode.name + '.png'
                 }
-            })
+            }
         })
-
-        console.log(JSON.stringify(items))
+        return items
     })
     .catch(function (err) {
         var items = {'items': [{
             'title': 'Unerwarteter Fehler 😲',
             'subtitle': err.message,
         }]}
-        console.log(JSON.stringify(items))
-        throw err
+        return items
     })
 }
