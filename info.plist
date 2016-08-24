@@ -5,7 +5,21 @@
 	<key>bundleid</key>
 	<string>io.kilian.alfred_dvb</string>
 	<key>connections</key>
-	<dict/>
+	<dict>
+		<key>2D9B8F29-2834-4F55-90DF-9E198C15F1D5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>66EB33EB-8E61-47CD-892A-69A03A839788</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
 	<key>createdby</key>
 	<string>Kilian Koeltzsch</string>
 	<key>description</key>
@@ -60,6 +74,29 @@ Icon by https://icons8.com</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>98</integer>
+				<key>script</key>
+				<string>./ScheduleNotification.app/Contents/MacOS/ScheduleNotification {query}</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>66EB33EB-8E61-47CD-892A-69A03A839788</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -69,6 +106,13 @@ Icon by https://icons8.com</string>
 		<dict>
 			<key>xpos</key>
 			<integer>280</integer>
+			<key>ypos</key>
+			<integer>240</integer>
+		</dict>
+		<key>66EB33EB-8E61-47CD-892A-69A03A839788</key>
+		<dict>
+			<key>xpos</key>
+			<integer>470</integer>
 			<key>ypos</key>
 			<integer>240</integer>
 		</dict>

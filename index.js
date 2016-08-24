@@ -6,6 +6,8 @@ moment.locale('de')
 
 var args = process.argv.slice(2)
 
+var notificationOffset = 10
+
 var offset = 0
 var stop = args[0]
 
@@ -15,47 +17,57 @@ if (offsetMatch !== null && offsetMatch.length > 0) {
     stop = args[0].split('in')[0]
 }
 
-monitor(stop, offset).then(function (output) {
-    console.log(JSON.stringify(output))
+monitor(stop, offset).then(output => {
+    console.log(JSON.stringify(createAlfredJSON(output)))
 })
 
-function monitor (stop, timeOffset = 0, numResults = 6) {
+function monitor(stop, timeOffset = 0, numResults = 6) {
     return dvb.monitor(stop, timeOffset, numResults)
-    .then(function (data) {
-        var items = {'items': []}
-
+    .then((data) => {
         if (data.length === 0) {
-            items.items.push({
+            return [{
                 'title': 'Haltestelle nicht gefunden 🤔',
                 'subtitle': 'Vielleicht ein Tippfehler?'
-            })
-            return items
+            }]
         }
 
-        items.items = data.map(function (con) {
-            var timeText
-            if (con.arrivalTimeRelative === 0) {
-                timeText = ' jetzt'
-            } else if (con.arrivalTimeRelative === 1) {
-                timeText = ' in 1 Minute'
-            } else {
-                timeText = ' in ' + con.arrivalTimeRelative + ' Minuten'
+        return data.map(con => {
+            var arg = '0 "Zu bald" "Verbindung muss mehr als 10 Minuten in der Zukunft liegen."'
+            if (con.arrivalTimeRelative > notificationOffset) {
+                var lineDescription = `${con.line} ${con.direction}`
+                arg = `${con.arrivalTimeRelative - notificationOffset} "Zeit Zu Gehen" "Die ${lineDescription} fährt in ${notificationOffset} Minuten."`
             }
+
             return {
-                'title': con.line + ' ' + con.direction + timeText,
+                'title': con.line + ' ' + con.direction + createArrivalTimeString(con.arrivalTimeRelative),
                 'subtitle': moment().add(con.arrivalTimeRelative, 'm').format('dddd, HH:mm [Uhr]'),
+                'arg': arg,
                 'icon': {
-                    'path': 'transport_icons/' + con.mode.name + '.png'
+                    'path': `transport_icons/${con.mode.name}.png`
                 }
             }
         })
-        return items
     })
-    .catch(function (err) {
-        var items = {'items': [{
+    .catch(err => {
+        return [{
             'title': 'Unerwarteter Fehler 😲',
             'subtitle': err.message,
-        }]}
-        return items
+        }]
     })
+}
+
+function createArrivalTimeString(arrivalTime) {
+    if (arrivalTime === 0) {
+        return ' jetzt'
+    } else if (arrivalTime === 1) {
+        return ' in 1 Minute'
+    } else {
+        return ` in ${arrivalTime} Minuten`
+    }
+}
+
+function createAlfredJSON(items) {
+    return {
+        'items': items
+    }
 }
