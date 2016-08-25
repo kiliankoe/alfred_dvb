@@ -1,6 +1,6 @@
 {
   "name": "alfred_dvb",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Monitor public transport in the VVO/DVB network from Alfred",
   "main": "index.js",
   "scripts": {
