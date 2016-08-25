@@ -9,8 +9,8 @@ var offset = 0
 
 var offsetMatch = args[0].match(/in (\d+)/)
 if (offsetMatch !== null && offsetMatch.length > 0) {
-    offset = offsetMatch[1]
-    stop = args[0].split('in')[0]
+  offset = offsetMatch[1]
+  stop = args[0].split('in')[0]
 }
 
 monitor(stop, offset)
@@ -19,7 +19,7 @@ monitor(stop, offset)
   .then(console.log)
 
 function createAlfredJSON(items) {
-    return {
-        'items': items
-    }
+  return {
+    'items': items
+  }
 }
