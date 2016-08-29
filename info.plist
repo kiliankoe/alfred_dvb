@@ -39,7 +39,7 @@ Icon by https://icons8.com</string>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>102</integer>
 				<key>keyword</key>
 				<string>dvb</string>
 				<key>queuedelaycustom</key>
@@ -53,7 +53,7 @@ Icon by https://icons8.com</string>
 				<key>runningsubtext</key>
 				<string>Searching...</string>
 				<key>script</key>
-				<string></string>
+				<string>./index.js `iconv -f UTF8-MAC&lt;&lt;&lt;$1`</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -63,7 +63,7 @@ Icon by https://icons8.com</string>
 				<key>title</key>
 				<string>Monitor a Stop</string>
 				<key>type</key>
-				<integer>8</integer>
+				<integer>0</integer>
 				<key>withspace</key>
 				<true/>
 			</dict>
