@@ -4,7 +4,7 @@ const monitor = require('./lib/monitor')
 
 const args = process.argv.slice(2)
 
-var stop = args[0]
+var stop = args[0].normalize('NFC')
 var offset = 0
 
 var offsetMatch = args[0].match(/in (\d+)/)
