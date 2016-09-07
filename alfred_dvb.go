@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/kiliankoe/dvbgo"
 	"github.com/pascalw/go-alfred"
@@ -51,9 +52,10 @@ func main() {
 		for _, dep := range departures[:resultsAmount] {
 			mode, _ := dep.Mode()
 			title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
+			departureTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime))
 			response.AddItem(&alfred.AlfredResponseItem{
 				Title:    title,
-				Subtitle: "",
+				Subtitle: departureTime.Format("Monday, 15:04"),
 				Arg:      "",
 				Icon:     fmt.Sprintf("transport_icons/%s.png", mode.Name),
 			})
