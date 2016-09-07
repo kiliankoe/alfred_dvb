@@ -57,7 +57,7 @@ Icon by https://icons8.com</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
-				<string>index.js</string>
+				<string>alfred_dvb</string>
 				<key>subtext</key>
 				<string>List all upcoming connections from a stop</string>
 				<key>title</key>
