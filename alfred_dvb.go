@@ -8,6 +8,13 @@ import (
 	"github.com/pascalw/go-alfred"
 )
 
+const (
+	// Notifications are displayed 10 minutes before departure
+	notificationOffset = 10
+	// How many results are shown at a single time
+	resultsAmount = 6
+)
+
 func main() {
 	queryTerms := os.Args[1:]
 	response := alfred.NewResponse()
@@ -18,25 +25,36 @@ func main() {
 
 	departures, err := dvb.Monitor(queryTerms[0], 0, "")
 	if err != nil {
-		fmt.Println(err) // FIXME
-	}
-
-	if len(departures) < 1 {
 		response.AddItem(&alfred.AlfredResponseItem{
-			Valid: true,
-			Uid:   "",
-			Title: "Haltestelle nicht gefunden",
+			Title:    "Unerwarteter Fehler 😲",
+			Subtitle: err.Error(),
+		})
+	} else if len(departures) < 1 {
+		response.AddItem(&alfred.AlfredResponseItem{
+			Title:    "Haltestelle nicht gefunden 🤔",
+			Subtitle: "Vielleicht ein Tippfehler?",
 		})
 	} else {
-		for _, dep := range departures[:6] {
+		for _, dep := range departures[:resultsAmount] {
+			mode, _ := dep.Mode()
+			title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
 			response.AddItem(&alfred.AlfredResponseItem{
-				Valid: true,
-				Uid:   dep.String(),
-				Title: dep.String(),
-				Arg:   "",
+				Title:    title,
+				Subtitle: "",
+				Arg:      "",
+				Icon:     fmt.Sprintf("transport_icons/%s.png", mode.Name),
 			})
 		}
 	}
 
 	response.Print()
+}
+
+func pluralizeTimeString(minutes int) string {
+	if minutes == 0 {
+		return "jetzt"
+	} else if minutes == 1 {
+		return "in 1 Minute"
+	}
+	return fmt.Sprintf("in %d Minuten", minutes)
 }
