@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/kiliankoe/dvbgo"
 	"github.com/pascalw/go-alfred"
@@ -23,7 +26,17 @@ func main() {
 		os.Exit(0)
 	}
 
-	departures, err := dvb.Monitor(queryTerms[0], 0, "")
+	stop := queryTerms[0]
+	offset := 0
+
+	// "helmholtzstraße in 10" should set the offset accordingly
+	offsetR, _ := regexp.Compile("in (\\d+)")
+	if matches := offsetR.FindStringSubmatch(queryTerms[0]); len(matches) > 0 {
+		stop = strings.Split(stop, " in ")[0]
+		offset, _ = strconv.Atoi(matches[1])
+	}
+
+	departures, err := dvb.Monitor(stop, offset, "")
 	if err != nil {
 		response.AddItem(&alfred.AlfredResponseItem{
 			Title:    "Unerwarteter Fehler 😲",
