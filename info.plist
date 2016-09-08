@@ -10,7 +10,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>66EB33EB-8E61-47CD-892A-69A03A839788</string>
+				<string>9627853B-59C6-4B89-8CA8-97FF72C1D1DE</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -28,7 +28,7 @@ Icon by https://icons8.com</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>DVB v0.4.3</string>
+	<string>DVB</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -39,7 +39,7 @@ Icon by https://icons8.com</string>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>102</integer>
 				<key>keyword</key>
 				<string>dvb</string>
 				<key>queuedelaycustom</key>
@@ -77,46 +77,46 @@ Icon by https://icons8.com</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
+				<key>lastpathcomponent</key>
 				<false/>
-				<key>escaping</key>
-				<integer>98</integer>
-				<key>script</key>
-				<string>./ScheduleNotification.app/Contents/MacOS/ScheduleNotification {query}</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Auf geht's</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
-			<string>66EB33EB-8E61-47CD-892A-69A03A839788</string>
+			<string>9627853B-59C6-4B89-8CA8-97FF72C1D1DE</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>Monitor public transport in the VVO/DVB network from Alfred</string>
 	<key>uidata</key>
 	<dict>
 		<key>2D9B8F29-2834-4F55-90DF-9E198C15F1D5</key>
 		<dict>
 			<key>xpos</key>
-			<integer>280</integer>
+			<integer>240</integer>
 			<key>ypos</key>
 			<integer>240</integer>
 		</dict>
-		<key>66EB33EB-8E61-47CD-892A-69A03A839788</key>
+		<key>9627853B-59C6-4B89-8CA8-97FF72C1D1DE</key>
 		<dict>
 			<key>xpos</key>
-			<integer>470</integer>
+			<integer>480</integer>
 			<key>ypos</key>
 			<integer>240</integer>
 		</dict>
 	</dict>
+	<key>version</key>
+	<string>1.0.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/kiliankoe/alfred_dvb</string>
 </dict>

@@ -57,7 +57,7 @@ func main() {
 			response.AddItem(&alfred.AlfredResponseItem{
 				Title:    title,
 				Subtitle: formatSubtitleTime(departureTime),
-				Arg:      "",
+				Arg:      fmt.Sprintf("Die %s Richtung %s kommt um %s Uhr.", dep.Line, dep.Direction, departureTime.Format("15:04")),
 				Icon:     fmt.Sprintf("transport_icons/%s.png", mode.Name),
 			})
 		}
