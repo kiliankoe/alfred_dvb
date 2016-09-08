@@ -82,7 +82,7 @@ func formatSubtitleTime(t time.Time) string {
 		minuteStr += "0"
 	}
 	minuteStr += strconv.Itoa(t.Minute())
-	return fmt.Sprintf("%s, %d:%d Uhr", weekday, t.Hour(), t.Minute())
+	return fmt.Sprintf("%s, %d:%s Uhr", weekday, t.Hour(), minuteStr)
 }
 
 func localizeWeekday(weekday string) string {
