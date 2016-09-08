@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/beevik/guid"
 	"github.com/kiliankoe/dvbgo"
 	"github.com/pascalw/go-alfred"
 )
@@ -55,6 +56,7 @@ func main() {
 			departureTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime))
 
 			response.AddItem(&alfred.AlfredResponseItem{
+				Uid:      guid.New().String(),
 				Title:    title,
 				Subtitle: formatSubtitleTime(departureTime),
 				Arg:      "",
