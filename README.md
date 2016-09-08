@@ -1,10 +1,10 @@
-## alfred_dvb
+## alfred dvb
 
 Monitor public transport in the VVO/DVB network right from within Alfred. Powered by [dvbgo](https://github.com/kiliankoe/dvbgo).
 
 ![screenshot](https://cloud.githubusercontent.com/assets/2625584/17901215/b9d2f916-6962-11e6-8c34-665176f36a82.png)
 
-Download [here](https://github.com/kiliankoe/alfred_dvb/releases/latest).
+Download [here](https://github.com/kiliankoe/alfred_dvb/releases/latest) (click on `DVB.v*.alfredworkflow`).
 
 ### Usage
 
@@ -16,7 +16,7 @@ Download [here](https://github.com/kiliankoe/alfred_dvb/releases/latest).
 
   Gives you all connections from Prager Straße in 10 minutes. Optional text after the amount of minutes is ignored, so you could also enter `dvb prager in 10 minutes` if you prefer.
 
-Hitting ⏎ on a connection will schedule a notification to be sent 10 minutes prior to departure.
+Hitting ⏎ on a connection will schedule a notification to be sent 10 minutes prior to departure. This obviously only works for departures that will depart more than 10 minutes from the current time. 
 
 ### Problems?
 
