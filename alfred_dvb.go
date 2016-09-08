@@ -70,10 +70,19 @@ func (dep departureItem) Item() *goalfred.Item {
 	title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
 	departureTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime))
 
+	notificationTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime-notificationOffset))
+	notificationDelay := notificationTime.Sub(time.Now()).Seconds()
+
+	valid := true
+	if notificationDelay < 0 {
+		valid = false
+	}
+
 	item := &goalfred.Item{
 		Title:    title,
 		Subtitle: formatSubtitleTime(departureTime),
-		Arg:      fmt.Sprintf("Die %s Richtung %s kommt um %s Uhr.", dep.Line, dep.Direction, departureTime.Format("15:04")),
+		Arg:      fmt.Sprintf("%.0f", notificationDelay),
+		Valid:    &valid,
 		Icon: &goalfred.Icon{
 			Path: fmt.Sprintf("transport_icons/%s.png", modeName),
 		},
