@@ -53,9 +53,10 @@ func main() {
 			mode, _ := dep.Mode()
 			title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
 			departureTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime))
+
 			response.AddItem(&alfred.AlfredResponseItem{
 				Title:    title,
-				Subtitle: departureTime.Format("Monday, 15:04"),
+				Subtitle: formatSubtitleTime(departureTime),
 				Arg:      "",
 				Icon:     fmt.Sprintf("transport_icons/%s.png", mode.Name),
 			})
@@ -72,4 +73,35 @@ func pluralizeTimeString(minutes int) string {
 		return "in 1 Minute"
 	}
 	return fmt.Sprintf("in %d Minuten", minutes)
+}
+
+func formatSubtitleTime(t time.Time) string {
+	weekday := localizeWeekday(t.Weekday().String())
+	minuteStr := ""
+	if t.Minute() < 10 {
+		minuteStr += "0"
+	}
+	minuteStr += strconv.Itoa(t.Minute())
+	return fmt.Sprintf("%s, %d:%d Uhr", weekday, t.Hour(), t.Minute())
+}
+
+func localizeWeekday(weekday string) string {
+	switch weekday {
+	case "Monday":
+		return "Montag"
+	case "Tuesday":
+		return "Dienstag"
+	case "Wednesday":
+		return "Mittwoch"
+	case "Thursday":
+		return "Donnerstag"
+	case "Friday":
+		return "Freitag"
+	case "Saturday":
+		return "Samstag"
+	case "Sunday":
+		return "Sonntag"
+	default:
+		return ""
+	}
 }
