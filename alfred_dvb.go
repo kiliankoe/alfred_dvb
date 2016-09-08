@@ -37,7 +37,19 @@ func main() {
 		offset, _ = strconv.Atoi(matches[1])
 	}
 
+	// "albertplatz [3]" should filter everything but 3s
+	var lineFilter = ""
+	linefilterR, _ := regexp.Compile("\\[(.+)\\]")
+	if matches := linefilterR.FindStringSubmatch(queryTerms[0]); len(matches) > 0 {
+		stop = strings.Replace(stop, matches[0], "", -1)
+		lineFilter = matches[1]
+	}
+
 	departures, err := dvb.Monitor(stop, offset, "")
+	if lineFilter != "" {
+		departures = filterDepartures(departures, lineFilter)
+	}
+
 	if err != nil {
 		response.AddItem(&goalfred.Item{
 			Title:    "Unerwarteter Fehler 😲",
@@ -45,11 +57,15 @@ func main() {
 		})
 	} else if len(departures) < 1 {
 		response.AddItem(&goalfred.Item{
-			Title:    "Haltestelle nicht gefunden 🤔",
+			Title:    "Keine Haltestelle oder Verbindungen gefunden 🤔",
 			Subtitle: "Vielleicht ein Tippfehler?",
 		})
 	} else {
-		for _, dep := range departures[:resultsAmount] {
+		if len(departures) > resultsAmount {
+			departures = departures[:resultsAmount]
+		}
+
+		for _, dep := range departures {
 			response.AddItem(departureItem(*dep))
 		}
 	}
@@ -88,6 +104,16 @@ func (dep departureItem) Item() *goalfred.Item {
 		},
 	}
 	return item
+}
+
+func filterDepartures(departures []*dvb.Departure, lineFilter string) []*dvb.Departure {
+	var filtered []*dvb.Departure
+	for _, dep := range departures {
+		if strings.ToLower(dep.Line) == strings.ToLower(lineFilter) {
+			filtered = append(filtered, dep)
+		}
+	}
+	return filtered
 }
 
 func pluralizeTimeString(minutes int) string {
