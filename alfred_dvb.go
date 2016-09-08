@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/BenchR267/goalfred"
 	"github.com/kiliankoe/dvbgo"
-	"github.com/pascalw/go-alfred"
 )
 
 const (
@@ -21,7 +21,7 @@ const (
 
 func main() {
 	queryTerms := os.Args[1:]
-	response := alfred.NewResponse()
+	response := goalfred.NewResponse()
 
 	if len(queryTerms) < 1 {
 		os.Exit(0)
@@ -39,31 +39,46 @@ func main() {
 
 	departures, err := dvb.Monitor(stop, offset, "")
 	if err != nil {
-		response.AddItem(&alfred.AlfredResponseItem{
+		response.AddItem(&goalfred.Item{
 			Title:    "Unerwarteter Fehler 😲",
 			Subtitle: err.Error(),
 		})
 	} else if len(departures) < 1 {
-		response.AddItem(&alfred.AlfredResponseItem{
+		response.AddItem(&goalfred.Item{
 			Title:    "Haltestelle nicht gefunden 🤔",
 			Subtitle: "Vielleicht ein Tippfehler?",
 		})
 	} else {
 		for _, dep := range departures[:resultsAmount] {
-			mode, _ := dep.Mode()
-			title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
-			departureTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime))
-
-			response.AddItem(&alfred.AlfredResponseItem{
-				Title:    title,
-				Subtitle: formatSubtitleTime(departureTime),
-				Arg:      fmt.Sprintf("Die %s Richtung %s kommt um %s Uhr.", dep.Line, dep.Direction, departureTime.Format("15:04")),
-				Icon:     fmt.Sprintf("transport_icons/%s.png", mode.Name),
-			})
+			response.AddItem(departureItem(*dep))
 		}
 	}
 
 	response.Print()
+}
+
+type departureItem dvb.Departure
+
+func (dep departureItem) Item() *goalfred.Item {
+	var modeName string
+	mode, err := dvb.Departure(dep).Mode()
+	if err != nil {
+		modeName = "unknown"
+	} else {
+		modeName = mode.Name
+	}
+	title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
+	departureTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime))
+
+	item := &goalfred.Item{
+		Title:    title,
+		Subtitle: formatSubtitleTime(departureTime),
+		Arg:      fmt.Sprintf("Die %s Richtung %s kommt um %s Uhr.", dep.Line, dep.Direction, departureTime.Format("15:04")),
+		Icon: &goalfred.Icon{
+			Path: fmt.Sprintf("transport_icons/%s.png", modeName),
+		},
+	}
+	return item
 }
 
 func pluralizeTimeString(minutes int) string {
