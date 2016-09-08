@@ -1,6 +1,6 @@
 ## alfred_dvb
 
-Monitor public transport in the VVO/DVB network right from within Alfred. Powered by [dvbjs](https://github.com/kiliankoe/dvbjs).
+Monitor public transport in the VVO/DVB network right from within Alfred. Powered by [dvbgo](https://github.com/kiliankoe/dvbgo).
 
 ![screenshot](https://cloud.githubusercontent.com/assets/2625584/17901215/b9d2f916-6962-11e6-8c34-665176f36a82.png)
 
