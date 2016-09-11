@@ -37,34 +37,19 @@ var resultsAmount = getResultsAmount()
 
 func main() {
 	queryTerms := os.Args[1:]
-	response := goalfred.NewResponse()
-
 	if len(queryTerms) < 1 {
 		os.Exit(0)
 	}
 
-	stop := queryTerms[0]
-	offset := 0
-
-	// "helmholtzstraße in 10" should set the offset accordingly
-	offsetR, _ := regexp.Compile("in (\\d+)")
-	if matches := offsetR.FindStringSubmatch(queryTerms[0]); len(matches) > 0 {
-		stop = strings.Split(stop, " in ")[0]
-		offset, _ = strconv.Atoi(matches[1])
-	}
-
-	// "albertplatz [3]" should filter everything but 3s
-	var lineFilter = ""
-	linefilterR, _ := regexp.Compile("\\[(.+)\\]")
-	if matches := linefilterR.FindStringSubmatch(queryTerms[0]); len(matches) > 0 {
-		stop = strings.Replace(stop, matches[0], "", -1)
-		lineFilter = matches[1]
-	}
+	query := queryTerms[0]
+	stop, offset, lineFilter := parseQuery(query)
 
 	departures, err := dvb.Monitor(stop, offset, "")
 	if lineFilter != "" {
 		departures = filterDepartures(departures, lineFilter)
 	}
+
+	response := goalfred.NewResponse()
 
 	if err != nil {
 		response.AddItem(&goalfred.Item{
@@ -120,6 +105,26 @@ func (dep departureItem) Item() *goalfred.Item {
 		},
 	}
 	return item
+}
+
+func parseQuery(query string) (stop string, offset int, lineFilter string) {
+	stop = query
+
+	// "helmholtzstraße in 10" should set the offset accordingly
+	offsetR, _ := regexp.Compile("in (\\d+)")
+	if matches := offsetR.FindStringSubmatch(query); len(matches) > 0 {
+		stop = strings.Split(stop, " in ")[0]
+		offset, _ = strconv.Atoi(matches[1])
+	}
+
+	// "albertplatz [3]" should filter everything but 3s
+	linefilterR, _ := regexp.Compile("\\[(.+)\\]")
+	if matches := linefilterR.FindStringSubmatch(query); len(matches) > 0 {
+		stop = strings.Replace(stop, matches[0], "", -1)
+		lineFilter = matches[1]
+	}
+
+	return
 }
 
 func filterDepartures(departures []*dvb.Departure, lineFilter string) []*dvb.Departure {
