@@ -24,6 +24,12 @@ You can of course mix and match time offsets with `... in x` and filters with `[
 
 Hitting ⏎ on a connection will schedule a notification to be sent 10 minutes prior to departure. This obviously only works for departures that will depart more than 10 minutes from the current time. 
 
+### Settings
+
+There's two settings you can customize to make this workflow fit your needs even better. Both are editable from within Alfred. Go to the "Workflows" Tab and click on "DVB" in the sidebar. Then select the button to "configure workflow and variables" in the upper right-hand corner. It should look like this: `[𝒙]`
+
+In the right panel you can now set how many minutes in advance this workflow should send you notifications (especially useful if you need more than the default 10 to reach your stop) and how many results should be displayed (default is 6).
+
 ### Problems?
 
 Please [report an issue](https://github.com/kiliankoe/alfred_dvb/issues/new) if something isn't working as expected or you have a question/feature request.
