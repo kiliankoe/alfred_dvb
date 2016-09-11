@@ -95,7 +95,7 @@ Icon by https://icons8.com</string>
 				<key>queuemode</key>
 				<integer>2</integer>
 				<key>runningsubtext</key>
-				<string>Searching...</string>
+				<string>Suche...</string>
 				<key>script</key>
 				<string></string>
 				<key>scriptargtype</key>
@@ -103,7 +103,7 @@ Icon by https://icons8.com</string>
 				<key>scriptfile</key>
 				<string>alfred_dvb</string>
 				<key>subtext</key>
-				<string>List all upcoming connections from a stop</string>
+				<string>Liste alle bevorstehenden Abfahrten einer Haltestelle auf</string>
 				<key>title</key>
 				<string>Monitor a Stop</string>
 				<key>type</key>
