@@ -110,6 +110,7 @@ func (dep departureItem) Item() *goalfred.Item {
 			"line":              dep.Line,
 			"direction":         dep.Direction,
 			"departureTime":     fmt.Sprintf("%02d:%02d Uhr", departureTime.Hour(), departureTime.Minute()),
+			"notificationTime":  fmt.Sprintf("%02d:%02d Uhr", notificationTime.Hour(), notificationTime.Minute()),
 		},
 	})
 

@@ -64,7 +64,7 @@ Icon by https://icons8.com</string>
 				<key>removeextension</key>
 				<false/>
 				<key>text</key>
-				<string>Du bekommst um {var:departureTime} eine Benachrichtigung.</string>
+				<string>Du bekommst um {var:notificationTime} eine Benachrichtigung.</string>
 				<key>title</key>
 				<string>Geht klar ✔️</string>
 			</dict>
