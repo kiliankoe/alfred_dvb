@@ -12,12 +12,28 @@ import (
 	"github.com/kiliankoe/dvbgo"
 )
 
-const (
-	// Notifications are displayed 10 minutes before departure
-	notificationOffset = 10
-	// How many results are shown at a single time
-	resultsAmount = 6
-)
+// Notifications are displayed 10 minutes before departure or whatever is specified in Alfred
+func getNotificationOffset() int {
+	offset := os.Getenv("TIME_OFFSET")
+	intVal, err := strconv.Atoi(offset)
+	if err != nil {
+		return 10
+	}
+	return intVal
+}
+
+// Default is to show 6 results, unless otherwise specified in Alfred
+func getResultsAmount() int {
+	amount := os.Getenv("RESULTS_AMOUNT")
+	intVal, err := strconv.Atoi(amount)
+	if err != nil {
+		return 6
+	}
+	return intVal
+}
+
+var notificationOffset = getNotificationOffset()
+var resultsAmount = getResultsAmount()
 
 func main() {
 	queryTerms := os.Args[1:]

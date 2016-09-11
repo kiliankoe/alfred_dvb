@@ -10,6 +10,16 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
+				<string>824C86E0-F59F-4217-B179-3588196773CA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
 				<string>CBD9748E-A840-4A51-B410-EF5B869EB29E</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -47,12 +57,33 @@ Icon by https://icons8.com</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>Du bekommst {var:TIME_OFFSET} Minuten vor Abfahrt eine Benachrichtigung.</string>
+				<key>title</key>
+				<string>Geht klar!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>824C86E0-F59F-4217-B179-3588196773CA</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>alfredfiltersresults</key>
 				<false/>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>102</integer>
+				<integer>0</integer>
 				<key>keyword</key>
 				<string>dvb</string>
 				<key>queuedelaycustom</key>
@@ -133,6 +164,13 @@ Icon by https://icons8.com</string>
 			<key>ypos</key>
 			<integer>240</integer>
 		</dict>
+		<key>824C86E0-F59F-4217-B179-3588196773CA</key>
+		<dict>
+			<key>xpos</key>
+			<integer>480</integer>
+			<key>ypos</key>
+			<integer>120</integer>
+		</dict>
 		<key>9627853B-59C6-4B89-8CA8-97FF72C1D1DE</key>
 		<dict>
 			<key>xpos</key>
@@ -147,6 +185,13 @@ Icon by https://icons8.com</string>
 			<key>ypos</key>
 			<integer>270</integer>
 		</dict>
+	</dict>
+	<key>variables</key>
+	<dict>
+		<key>RESULTS_AMOUNT</key>
+		<string>6</string>
+		<key>TIME_OFFSET</key>
+		<string>10</string>
 	</dict>
 	<key>version</key>
 	<string>1.0.0</string>
