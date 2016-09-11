@@ -98,12 +98,21 @@ func (dep departureItem) Item() *goalfred.Item {
 	item := &goalfred.Item{
 		Title:    title,
 		Subtitle: formatSubtitleTime(departureTime),
-		Arg:      fmt.Sprintf("%.0f", notificationDelay),
 		Valid:    &valid,
 		Icon: &goalfred.Icon{
 			Path: fmt.Sprintf("transport_icons/%s.png", modeName),
 		},
 	}
+
+	item.SetComplexArg(goalfred.ComplexArg{
+		Variables: map[string]string{
+			"notificationDelay": fmt.Sprintf("%.0f", notificationDelay),
+			"line":              dep.Line,
+			"direction":         dep.Direction,
+			"departureTime":     fmt.Sprintf("%02d:%02d Uhr", departureTime.Hour(), departureTime.Minute()),
+		},
+	})
+
 	return item
 }
 
@@ -148,12 +157,7 @@ func pluralizeTimeString(minutes int) string {
 
 func formatSubtitleTime(t time.Time) string {
 	weekday := localizeWeekday(t.Weekday().String())
-	minuteStr := ""
-	if t.Minute() < 10 {
-		minuteStr += "0"
-	}
-	minuteStr += strconv.Itoa(t.Minute())
-	return fmt.Sprintf("%s, %d:%s Uhr", weekday, t.Hour(), minuteStr)
+	return fmt.Sprintf("%s, %02d:%02d Uhr", weekday, t.Hour(), t.Minute())
 }
 
 func localizeWeekday(weekday string) string {

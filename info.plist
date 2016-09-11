@@ -64,9 +64,9 @@ Icon by https://icons8.com</string>
 				<key>removeextension</key>
 				<false/>
 				<key>text</key>
-				<string>Du bekommst {var:TIME_OFFSET} Minuten vor Abfahrt eine Benachrichtigung.</string>
+				<string>Du bekommst um {var:departureTime} eine Benachrichtigung.</string>
 				<key>title</key>
-				<string>Geht klar!</string>
+				<string>Geht klar ✔️</string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.notification</string>
@@ -128,9 +128,9 @@ Icon by https://icons8.com</string>
 				<key>removeextension</key>
 				<false/>
 				<key>text</key>
-				<string>Deine Verbindung fährt in 10 Minuten.</string>
+				<string>Die {var:line} Richtung {var:direction} fährt in {var:TIME_OFFSET} Minuten.</string>
 				<key>title</key>
-				<string>Auf geht's!</string>
+				<string>Auf geht's 🏃</string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.notification</string>
@@ -143,7 +143,7 @@ Icon by https://icons8.com</string>
 			<key>config</key>
 			<dict>
 				<key>seconds</key>
-				<string>{query}</string>
+				<string>{var:notificationDelay}</string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.utility.delay</string>
