@@ -12,7 +12,53 @@ import (
 	"github.com/kiliankoe/dvbgo"
 )
 
-// Notifications are displayed 10 minutes before departure or whatever is specified in Alfred
+var (
+	notificationOffset = getNotificationOffset()
+	resultsAmount      = getResultsAmount()
+)
+
+func main() {
+	queryTerms := os.Args[1:]
+	if len(queryTerms) < 1 {
+		// Only continue with further execution if an argument is given
+		os.Exit(0)
+	}
+
+	// Re-normalize input to deal with Alfred issues
+	// See http://www.alfredforum.com/topic/2015-encoding-issue/ for details
+	query, err := goalfred.Normalize(queryTerms[0])
+	handleError(err)
+
+	stop, offset, lineFilter := parseQuery(query)
+
+	departures, err := dvb.Monitor(stop, offset, "")
+	handleError(err)
+
+	if lineFilter != "" {
+		departures = filterDepartures(departures, lineFilter)
+	}
+
+	response := goalfred.NewResponse()
+	defer response.Print()
+
+	if len(departures) < 1 {
+		response.AddItem(&goalfred.Item{
+			Title:    "Keine Haltestelle oder Verbindungen gefunden 🤔",
+			Subtitle: "Vielleicht ein Tippfehler?",
+		})
+		return
+	}
+
+	if len(departures) > resultsAmount {
+		departures = departures[:resultsAmount]
+	}
+
+	for _, dep := range departures {
+		response.AddItem(departureItem(*dep))
+	}
+}
+
+// Notifications are displayed 10 minutes before departure unless otherwise specified in Alfred
 func getNotificationOffset() int {
 	offset := os.Getenv("TIME_OFFSET")
 	intVal, err := strconv.Atoi(offset)
@@ -22,7 +68,7 @@ func getNotificationOffset() int {
 	return intVal
 }
 
-// Default is to show 6 results, unless otherwise specified in Alfred
+// Default is to show 6 results unless otherwise specified in Alfred
 func getResultsAmount() int {
 	amount := os.Getenv("RESULTS_AMOUNT")
 	intVal, err := strconv.Atoi(amount)
@@ -32,93 +78,7 @@ func getResultsAmount() int {
 	return intVal
 }
 
-var (
-	notificationOffset = getNotificationOffset()
-	resultsAmount      = getResultsAmount()
-)
-
-func main() {
-	queryTerms := os.Args[1:]
-	if len(queryTerms) < 1 {
-		os.Exit(0)
-	}
-
-	query, err := goalfred.Normalize(queryTerms[0])
-	stop, offset, lineFilter := parseQuery(query)
-
-	departures, err := dvb.Monitor(stop, offset, "")
-	if lineFilter != "" {
-		departures = filterDepartures(departures, lineFilter)
-	}
-
-	response := goalfred.NewResponse()
-
-	if err != nil {
-		response.AddItem(&goalfred.Item{
-			Title:    "Unerwarteter Fehler 😲",
-			Subtitle: err.Error(),
-		})
-	} else if len(departures) < 1 {
-		response.AddItem(&goalfred.Item{
-			Title:    "Keine Haltestelle oder Verbindungen gefunden 🤔",
-			Subtitle: "Vielleicht ein Tippfehler?",
-		})
-	} else {
-		if len(departures) > resultsAmount {
-			departures = departures[:resultsAmount]
-		}
-
-		for _, dep := range departures {
-			response.AddItem(departureItem(*dep))
-		}
-	}
-
-	response.Print()
-}
-
-type departureItem dvb.Departure
-
-func (dep departureItem) Item() *goalfred.Item {
-	var modeName string
-	mode, err := dvb.Departure(dep).Mode()
-	if err != nil {
-		modeName = "unknown"
-	} else {
-		modeName = mode.Name
-	}
-	title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
-	departureTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime))
-
-	notificationTime := time.Now().Add(time.Minute * time.Duration(dep.RelativeTime-notificationOffset))
-	notificationDelay := notificationTime.Sub(time.Now()).Seconds()
-
-	valid := true
-	if notificationDelay < 0 {
-		valid = false
-	}
-
-	item := &goalfred.Item{
-		Title:    title,
-		Subtitle: formatSubtitleTime(departureTime),
-		Valid:    &valid,
-		Icon: &goalfred.Icon{
-			Path: fmt.Sprintf("transport_icons/%s.png", modeName),
-		},
-	}
-
-	item.SetComplexArg(goalfred.ComplexArg{
-		Variables: map[string]string{
-			"notificationDelay": fmt.Sprintf("%.0f", notificationDelay),
-			"line":              dep.Line,
-			"direction":         dep.Direction,
-			"departureTime":     fmt.Sprintf("%02d:%02d Uhr", departureTime.Hour(), departureTime.Minute()),
-			"notificationTime":  fmt.Sprintf("%02d:%02d Uhr", notificationTime.Hour(), notificationTime.Minute()),
-		},
-	})
-
-	return item
-}
-
+// Read name of the stop, optional time offset and optional line filter from query
 func parseQuery(query string) (stop string, offset int, lineFilter string) {
 	stop = query
 
@@ -139,6 +99,7 @@ func parseQuery(query string) (stop string, offset int, lineFilter string) {
 	return
 }
 
+// Filter given list of departures by given line
 func filterDepartures(departures []*dvb.Departure, lineFilter string) []*dvb.Departure {
 	var filtered []*dvb.Departure
 	for _, dep := range departures {
@@ -149,6 +110,7 @@ func filterDepartures(departures []*dvb.Departure, lineFilter string) []*dvb.Dep
 	return filtered
 }
 
+// Given a number of minutes, output the correct version of "in x minute(s)" or "now"
 func pluralizeTimeString(minutes int) string {
 	if minutes == 0 {
 		return "jetzt"
@@ -158,11 +120,13 @@ func pluralizeTimeString(minutes int) string {
 	return fmt.Sprintf("in %d Minuten", minutes)
 }
 
+// Given a time object, output something like "Monday 15:04 Uhr"
 func formatSubtitleTime(t time.Time) string {
 	weekday := localizeWeekday(t.Weekday().String())
-	return fmt.Sprintf("%s, %02d:%02d Uhr", weekday, t.Hour(), t.Minute())
+	return fmt.Sprintf("%s %s Uhr", weekday, t.Format("15:04"))
 }
 
+// Translate a weekday string to German
 func localizeWeekday(weekday string) string {
 	switch weekday {
 	case "Monday":
