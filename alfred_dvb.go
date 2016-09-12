@@ -41,7 +41,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	query := queryTerms[0]
+	query, err := goalfred.Normalize(queryTerms[0])
 	stop, offset, lineFilter := parseQuery(query)
 
 	departures, err := dvb.Monitor(stop, offset, "")
