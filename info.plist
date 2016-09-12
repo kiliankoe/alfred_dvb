@@ -64,7 +64,7 @@ Icon by https://icons8.com</string>
 				<key>removeextension</key>
 				<false/>
 				<key>text</key>
-				<string>Du bekommst um {var:notificationTime} eine Benachrichtigung.</string>
+				<string>Du bekommst um {var:notificationTime} Uhr eine Benachrichtigung.</string>
 				<key>title</key>
 				<string>Geht klar ✔️</string>
 			</dict>
@@ -128,7 +128,7 @@ Icon by https://icons8.com</string>
 				<key>removeextension</key>
 				<false/>
 				<key>text</key>
-				<string>Die {var:line} Richtung {var:direction} fährt in {var:TIME_OFFSET} Minuten.</string>
+				<string>{var:modeTitle} {var:line} {var:direction} fährt in {var:TIME_OFFSET} Minuten ({var:departureTime}).</string>
 				<key>title</key>
 				<string>Auf geht's 🏃</string>
 			</dict>

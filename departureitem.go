@@ -14,11 +14,14 @@ type departureItem dvb.Departure
 // comply with goalfred's AlfredItem interface
 func (dep departureItem) Item() *goalfred.Item {
 	var modeName string
+	var modeTitle string
 	mode, err := dvb.Departure(dep).Mode()
 	if err != nil {
 		modeName = "unknown"
+		modeTitle = "Die"
 	} else {
 		modeName = mode.Name
+		modeTitle = mode.Title
 	}
 
 	title := fmt.Sprintf("%s %s %s", dep.Line, dep.Direction, pluralizeTimeString(dep.RelativeTime))
@@ -46,8 +49,9 @@ func (dep departureItem) Item() *goalfred.Item {
 			"notificationDelay": fmt.Sprintf("%.0f", notificationDelay),
 			"line":              dep.Line,
 			"direction":         dep.Direction,
-			"departureTime":     fmt.Sprintf("%02d:%02d Uhr", departureTime.Hour(), departureTime.Minute()),
-			"notificationTime":  fmt.Sprintf("%02d:%02d Uhr", notificationTime.Hour(), notificationTime.Minute()),
+			"modeTitle":         modeTitle,
+			"departureTime":     departureTime.Format("15:04"),
+			"notificationTime":  notificationTime.Format("15:04"),
 		},
 	})
 
