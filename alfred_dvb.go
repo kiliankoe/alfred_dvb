@@ -32,8 +32,10 @@ func getResultsAmount() int {
 	return intVal
 }
 
-var notificationOffset = getNotificationOffset()
-var resultsAmount = getResultsAmount()
+var (
+	notificationOffset = getNotificationOffset()
+	resultsAmount      = getResultsAmount()
+)
 
 func main() {
 	queryTerms := os.Args[1:]
