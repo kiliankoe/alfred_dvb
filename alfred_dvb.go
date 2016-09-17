@@ -18,16 +18,16 @@ var (
 )
 
 func main() {
-	queryTerms := os.Args[1:]
+	// Re-normalize input to deal with Alfred issues
+	// See http://www.alfredforum.com/topic/2015-encoding-issue/ for details
+	queryTerms, err := goalfred.NormalizedArguments()
+	handleError(err)
 	if len(queryTerms) < 1 {
 		// Only continue with further execution if an argument is given
 		os.Exit(0)
 	}
 
-	// Re-normalize input to deal with Alfred issues
-	// See http://www.alfredforum.com/topic/2015-encoding-issue/ for details
-	query, err := goalfred.Normalize(queryTerms[0])
-	handleError(err)
+	query := queryTerms[0]
 
 	stop, offset, lineFilter := parseQuery(query)
 
