@@ -38,11 +38,10 @@ func main() {
 		departures = filterDepartures(departures, lineFilter)
 	}
 
-	response := goalfred.NewResponse()
-	defer response.Print()
+	defer goalfred.Print()
 
 	if len(departures) < 1 {
-		response.AddItem(&goalfred.Item{
+		goalfred.Add(goalfred.Item{
 			Title:    "Keine Haltestelle oder Verbindungen gefunden 🤔",
 			Subtitle: "Vielleicht ein Tippfehler?",
 		})
@@ -54,7 +53,7 @@ func main() {
 	}
 
 	for _, dep := range departures {
-		response.AddItem(departureItem(*dep))
+		goalfred.Add(departureItem(*dep))
 	}
 }
 

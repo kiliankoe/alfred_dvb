@@ -12,12 +12,11 @@ func handleError(err error) {
 		return
 	}
 
-	response := goalfred.NewResponse()
-	response.AddItem(&goalfred.Item{
+	goalfred.Add(goalfred.Item{
 		Title:    "Unerwarteter Fehler 😲",
 		Subtitle: err.Error(),
 	})
-	response.Print()
+	goalfred.Print()
 
 	os.Exit(1)
 }

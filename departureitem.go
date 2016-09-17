@@ -12,7 +12,7 @@ import (
 type departureItem dvb.Departure
 
 // comply with goalfred's AlfredItem interface
-func (dep departureItem) Item() *goalfred.Item {
+func (dep departureItem) Item() goalfred.Item {
 	var modeName string
 	var modeTitle string
 	mode, err := dvb.Departure(dep).Mode()
@@ -35,7 +35,7 @@ func (dep departureItem) Item() *goalfred.Item {
 		valid = false
 	}
 
-	item := &goalfred.Item{
+	item := goalfred.Item{
 		Title:    title,
 		Subtitle: formatSubtitleTime(departureTime),
 		Valid:    &valid,
