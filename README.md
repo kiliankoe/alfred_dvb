@@ -22,7 +22,7 @@ Download [here](https://github.com/kiliankoe/alfred_dvb/releases/latest) (click 
 
 You can of course mix and match time offsets with `... in x` and filters with `[x]` in one query. Whichever comes first should also be completely up to you, just be sure to put time offsets after the name of the stop, e.g. `dvb pirnaischer [62] in 10` or `dvb hbf in 60 [s3]` are valid.
 
-Hitting ⏎ on a connection will schedule a notification to be sent 10 minutes prior to departure. This obviously only works for departures that will depart more than 10 minutes from the current time. 
+Hitting <kbd>enter</kbd> on a connection will schedule a notification to be sent 10 minutes prior to departure. This obviously only works for departures that will depart more than 10 minutes from the current time. 
 
 ### Settings
 
